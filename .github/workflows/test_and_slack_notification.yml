@@ -42,7 +42,7 @@ jobs:
         uses: rtCamp/action-slack-notify@v2
         env:
           SLACK_TITLE: Test success!
-          SLACK_MESSAGE: "master ブランチのテストが成功しました :+1:"
+          SLACK_MESSAGE: "master ブランチのテストが成功しました :tada:"
           SLACK_COLOR: good
 
       - name: Slack Notification on Failure
