@@ -13,7 +13,7 @@ defmodule Sample do
 
   """
   def hello do
-    :world2
+    :world
   end
 
   def hoge do
