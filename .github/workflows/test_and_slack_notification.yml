@@ -1,0 +1,52 @@
+name: CI and Slack notification
+
+on:
+  push:
+    branches:
+      - "master"
+    paths:
+      - "sample/**"
+
+env:
+  SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
+  SLACK_USERNAME: Test result
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+
+    container:
+      image: elixir:1.12.3-alpine
+      env:
+        MIX_ENV: test
+
+    steps:
+      - uses: actions/checkout@v1.0.0
+      - name: Dependencies install
+        run: |
+          apk update
+      - name: Install Dependencies for server
+        run: |
+          cd sample
+          mix deps.get
+      - name: Run Test for server
+        run: |
+          cd sample
+          mix deps.compile
+          mix compile --warnings-as-errors
+          mix test --warnings-as-errors
+
+      - name: Slack Notification on Success
+        if: ${{ success() && github.ref_name == 'master' }}
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_TITLE: Test success!
+          SLACK_COLOR: good
+
+      - name: Slack Notification on Failure
+        if: ${{ failure() && github.ref_name == 'master' }}
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_TITLE: Test failure...
+          SLACK_COLOR: danger
