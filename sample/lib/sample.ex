@@ -17,6 +17,6 @@ defmodule Sample do
   end
 
   def hoge do
-    :fuga3
+    :fuga4
   end
 end
