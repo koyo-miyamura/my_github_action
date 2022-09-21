@@ -15,4 +15,8 @@ defmodule Sample do
   def hello do
     :world
   end
+
+  def hoge do
+    :fuga
+  end
 end
